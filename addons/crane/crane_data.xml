@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="crane_yes_no_type" model="crane.inspection.point.type">
+            <field name="name">YES/NO</field>
+        </record>
+        <record id="crane_yes_value" model="crane.inspection.point.value">
+            <field name="name">YES</field>
+            <field name="result">safe</field>
+            <field name="point_type_id" ref="crane.crane_yes_no_type"/>
+        </record>
+        <record id="crane_no_value" model="crane.inspection.point.value">
+            <field name="name">NO</field>
+            <field name="result">not_safe</field>
+            <field name="point_type_id" ref="crane.crane_yes_no_type"/>
+        </record>
+
+        <record id="crane_ok_notok_type" model="crane.inspection.point.type">
+            <field name="name">OK/NOT OK</field>
+        </record>
+        <record id="crane_ok_value" model="crane.inspection.point.value">
+            <field name="name">OK</field>
+            <field name="result">safe</field>
+            <field name="point_type_id" ref="crane.crane_ok_notok_type"/>
+        </record>
+        <record id="crane_notok_value" model="crane.inspection.point.value">
+            <field name="name">NOT OK</field>
+            <field name="result">not_safe</field>
+            <field name="point_type_id" ref="crane.crane_ok_notok_type"/>
+        </record>
+
+        <record id="crane_good_repair_replace_type" model="crane.inspection.point.type">
+            <field name="name">GOOD/REPAIR/REPLACE</field>
+        </record>
+        <record id="crane_good_value" model="crane.inspection.point.value">
+            <field name="name">GOOD</field>
+            <field name="result">safe</field>
+            <field name="point_type_id" ref="crane.crane_good_repair_replace_type"/>
+        </record>
+        <record id="crane_repair_value" model="crane.inspection.point.value">
+            <field name="name">REPAIR</field>
+            <field name="result">not_safe</field>
+            <field name="point_type_id" ref="crane.crane_good_repair_replace_type"/>
+        </record>
+        <record id="crane_replace_value" model="crane.inspection.point.value">
+            <field name="name">REPLACE</field>
+            <field name="result">not_safe</field>
+            <field name="point_type_id" ref="crane.crane_good_repair_replace_type"/>
+        </record>
+
+     </data>
+</openerp>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_repeat_work_order" model="ir.ui.view">
+            <field name="name">Repeat WO</field>
+            <field name="model">crane.repeat.work.order</field>
+            <field name="arch" type="xml">
+                <form string="Repeat WO" version="7.0">
+                    <separator colspan="4" string="Not completed work orders cannot be repeated!" attrs="{'invisible':[('completed','=',True)]}"/>
+                    <group>
+                        <group>
+                            <field name="type" attrs="{'invisible':[('completed','=',False)]}"/>
+                            <field name="completed" invisible="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <div attrs="{'invisible':[('completed','=',False)]}">
+                            <button name="repeat_wo" string="Repeat WO" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </div>
+                        <button string="Cancel" special="cancel" attrs="{'invisible':[('completed','=',True)]}"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Create a Follow up Work Order"
+            res_model="crane.repeat.work.order"
+            src_model="crane.work.order"
+            target="new"
+            view_mode="form"
+            view_type="form"
+            id="action_view_repeat_work_order"/>
+
+    </data>
+</openerp>
