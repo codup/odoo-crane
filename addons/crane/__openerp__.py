@@ -21,7 +21,7 @@
 
 {
     'name': 'Crane & Hoist',
-    'version': '1.0',
+    'version': '1.1',
     'summary': 'Inspection and Service System',
     'description': """
 Inspection and Service System for Crane & Hoist.
