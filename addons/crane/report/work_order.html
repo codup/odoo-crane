@@ -1,5 +1,4 @@
 <html>
-<% from datetime import datetime, timedelta %>
 <head>
     <style type="text/css">
 @font-face {
@@ -94,13 +93,11 @@ table div.codup_underline {
     %for task in o.task_ids:
         <br/><br/>
         %if task.type == 'ins':
-            <%
-            first_form = True
-            for insp in task.inspection_line_ids:
-                if insp.header == True:
-                    first_form = False
-                    break
-            %>
+            %if task.subtype == 0:
+                %set first_form = True
+            %else:
+                %set first_form = False
+            %endif
             %if first_form == True:
 
 
@@ -108,7 +105,7 @@ table div.codup_underline {
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|n }
+			${ helper.embed_image('png',company.logo)|safe }
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -135,18 +132,16 @@ table div.codup_underline {
 	<span class="codup_header">Data: ${task.equipment_id.name}</span>
 	<table class="codup_feature">
 		<tr>
-<%
-index=0
-length = len(task.equipment_feature)
-max = 5*3
-%>
+%set index=0
+%set length = task.equipment_feature|count
+%set max = 5*3
 	%for feature in task.equipment_feature:
 		%if index < max:
 			%if index and index%3 == 0:
 				</tr><tr>
 			%endif
 			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			<% index=index+1 %>
+			%set index=index+1
 			%if ((index == length) and (index%3 != 0)):
 				%for i in range(0, 3-index%3):
 					<td colspan="2"></td><td colspan="2"></td>
@@ -163,7 +158,7 @@ max = 5*3
 		<thead><tr>
 			<th colspan="3">Inspection Point</th><th colspan="1">OK</th><th colspan="1">NOT OK</th><th colspan="10">Comment</th>
 	    </tr></thead>
-<% index=0 %>
+%set index=0
     %for insp in task.inspection_line_ids:
         %if index < 13:	
 		<tr>
@@ -181,7 +176,7 @@ max = 5*3
 			<td colspan="10">${insp.comment or ''}</td>
 	    </tr>
         %endif
-        <% index=index+1 %>
+        %set index=index+1
     %endfor
 	</table>
 <!-- end inspection point form1 -->
@@ -213,7 +208,7 @@ max = 5*3
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
 			%if task.approve_uid:
-                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|n }
+                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
 	    </tr>
@@ -229,7 +224,7 @@ max = 5*3
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|n }
+			${ helper.embed_image('png',company.logo)|safe }
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -256,18 +251,16 @@ max = 5*3
 	<span class="codup_header">Data: ${task.equipment_id.name}</span>
 	<table class="codup_feature">
 		<tr>
-<%
-index=0
-length = len(task.equipment_feature)
-max=5*3
-%>
+%set index=0
+%set length = task.equipment_feature|count
+%set max=5*3
 	%for feature in task.equipment_feature:
 		%if index < max:
 			%if index and index%3 == 0:
 				</tr><tr>
 			%endif
 			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			<% index=index+1 %>
+			%set index=index+1
 			%if ((index == length) and (index%3 != 0)):
 				%for i in range(0, 3-index%3):
 					<td colspan="2"></td><td colspan="2"></td>
@@ -280,32 +273,42 @@ max=5*3
 <!-- end equipment feature -->
 	<br/>
 <!-- start inspection point form2 -->
-<%
-transposed = []
-for i in range(39):
-    transposed.append([])
-    for j in range(3):
-        transposed[i].append(False)
-col_i=0
-row_i=0
-tab_i=0
-first = True
-for point in task.inspection_line_ids:
-    if point.header and not first:
-        if col_i==2: 
-            if tab_i == 0:
-                tab_i=20
-            else: break
-            col_i=0
-        else:
-            col_i=col_i+1
-        row_i=0
-    if row_i < 20:
-        transposed[row_i+tab_i][col_i] = point
-    row_i=row_i+1
-    first = False
-index=0
-%>
+%set transposed = []
+%for i in range(39):
+    %set tmp_var = transposed.append([])
+    %for j in range(3):
+        %set tmp_var = transposed[i].append(False)
+    %endfor
+%endfor
+%set col_i=0
+%set row_i=0
+%set tab_i=0
+%set first = True
+%set can_iterate = True
+%for point in task.inspection_line_ids:
+    %if can_iterate:
+        %if point.header and not first:
+            %if col_i==2: 
+                %if tab_i == 0:
+                    %set tab_i=20
+                %else: 
+                    %set can_iterate = False
+                %endif
+                %set col_i=0
+            %else:
+                %set col_i=col_i+1
+            %endif
+            %set row_i=0
+        %endif
+        %if row_i < 20:
+            %set tmp_var = transposed[row_i+tab_i].pop(col_i)
+            %set tmp_var = transposed[row_i+tab_i].insert(col_i,point)
+        %endif
+        %set row_i=row_i+1
+        %set first = False
+    %endif
+%endfor
+%set index=0
 	<table class="codup_inspection">
 	%for row in transposed:
 		%if index < 33:
@@ -389,7 +392,7 @@ index=0
 			</tr>
 			%endif
 		%endif
-		<% index=index+1 %>
+		%set index=index+1
 	%endfor
 	</table>
 <!-- end inspection point form2 -->
@@ -416,7 +419,7 @@ index=0
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
 			%if task.approve_uid:
-                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|n }
+                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
 	    </tr>
@@ -433,7 +436,7 @@ index=0
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|n }
+			${ helper.embed_image('png',company.logo)|safe }
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -473,18 +476,16 @@ index=0
 	<span class="codup_header">Data: ${task.equipment_id.name}</span>
 	<table class="codup_feature">
 		<tr>
-<%
-index=0
-length = len(task.equipment_feature)
-max=5*3
-%>
+%set index=0
+%set length = task.equipment_feature|count
+%set max=5*3
 	%for feature in task.equipment_feature:
 		%if index < max:
 			%if index and index%3 == 0:
 				</tr><tr>
 			%endif
 			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			<% index=index+1 %>
+			%set index=index+1
 			%if ((index == length) and (index%3 != 0)):
 				%for i in range(0, 3-index%3):
 					<td colspan="2"></td><td colspan="2"></td>
@@ -506,14 +507,14 @@ max=5*3
 		<tr class="codup_header_gray">
 			<td colspan="1">QTY</td><td colspan="1">Part Number</td><td colspan="7">Material (Stock)</td>
 	    </tr>
-<% index=0 %>
+    %set index=0
 	%for part in task.part_line_ids:
 		%if index < 5:
 		<tr>
 			<td colspan="1">${part.qty}</td><td colspan="1">${part.name}</td><td colspan="7">${part.description}</td>
 	    </tr>
         %endif
-        <% index=index+1 %>
+        %set index=index+1
 	%endfor	
 		<tr>
 			<td rowspan="3" colspan="2" class="codup_header_white">Serviceman</td><td colspan="7" class="codup_header_dark_gray">Hours Shown Include Travel Time</td>
@@ -524,36 +525,32 @@ max=5*3
 		<tr class="codup_header_gray">
 			<td colspan="1">AM</td><td colspan="1">PM</td><td colspan="1">AM</td><td colspan="1">PM</td>
 	    </tr>
-<% index=0 %>		
+    %set index=0
 	%for labor in task.labor_line_ids:
 		%if index < 5:
 		<tr class="codup_center">
 			<td colspan="2">${labor.user_id.name}</td>
 			<td colspan="1">
-            <%
-            of_hours=int(user.partner_id.tz_offset[0:3])
-            of_minutes=int(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])
-            start_datetime = datetime.strptime(labor.start_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
-            %>
-			%if int(start_datetime.strftime("%H")) < 12:
+            %set of_hours=user.partner_id.tz_offset[0:3]|int
+            %set of_minutes=(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])|int
+            %set start_datetime = datetime.strptime(labor.start_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
+			%if start_datetime.strftime("%H")|int < 12:
 				${start_datetime.strftime("%I:%M")}
 			%endif
 			</td>
 			<td colspan="1">
-            %if int(start_datetime.strftime("%H")) >= 12:
+            %if start_datetime.strftime("%H")|int >= 12:
 				${start_datetime.strftime("%I:%M")}
 			%endif
 			</td>
 			<td colspan="1">
-            <%
-            end_datetime = datetime.strptime(labor.end_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
-            %>
-			%if int(end_datetime.strftime("%H")) < 12:
+            %set end_datetime = datetime.strptime(labor.end_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
+			%if end_datetime.strftime("%H")|int < 12:
 				${end_datetime.strftime("%I:%M")}
 			%endif
 			</td>
 			<td colspan="1">
-            %if int(end_datetime.strftime("%H")) >= 12:
+            %if end_datetime.strftime("%H")|int >= 12:
 				${end_datetime.strftime("%I:%M")}
 			%endif
 			</td>
@@ -574,7 +571,7 @@ max=5*3
 			></td>
 	    </tr>
         %endif
-        <% index=index+1 %>
+        %set index=index+1
 	%endfor	
 	</table>
 <!-- end part&labor -->
@@ -609,7 +606,7 @@ max=5*3
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
             %if task.approve_uid:
-                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|n }
+                ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
 	    </tr>

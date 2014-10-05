@@ -312,6 +312,12 @@ class crane_task(osv.osv):
             res[task.id] = total
         return res
 
+    def _get_subtype(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for task in self.browse(cr, uid, ids, context=context):
+            res[task.id] = len([insp for insp in task.inspection_line_ids if insp.header == True])
+        return res
+
     _columns = {
         'name': fields.char('Task', size=64),
         'state': fields.selection(STATE_SELECTION, 'Status'),
@@ -323,6 +329,7 @@ class crane_task(osv.osv):
 		'completion_date': fields.date('Completion Date'),
 		'result': fields.selection(INSPECTION_RESULT_SELECTION, 'Inspection Result'),
         'total_labor': fields.function(_get_total, method=True, string='Total Labor h:m'),
+        'subtype': fields.function(_get_subtype, method=True, string='Subtype'),
  		'equipment_feature': fields.related('equipment_id', 'feature_line_ids', type="one2many", relation="crane.equipment.feature.line", string="Equipment Features", readonly=True),
         'inspection_line_ids': fields.one2many('crane.task.inspection.line', 'task_id', 'Inspection Points'),
         'labor_line_ids': fields.one2many('crane.task.labor.line', 'task_id', 'Labor'),

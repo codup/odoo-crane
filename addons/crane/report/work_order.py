@@ -19,9 +19,14 @@
 #
 ##############################################################################
 
-import crane
-import users
-import wizard
-import report
+from openerp.addons.report_webkit.webkit_report import webkit_report_extender
+from datetime import datetime, timedelta
+
+@webkit_report_extender("crane.report_crane_work_order")
+def extend_demo(pool, cr, uid, localcontext, context):
+    localcontext.update({
+        "datetime": datetime,
+        "timedelta": timedelta,
+    })
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
