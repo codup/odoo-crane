@@ -47,10 +47,11 @@ Support following feature:
         'res_config_view.xml',
         'crane_sequence.xml',
         'crane_data.xml',
-        'crane_report.xml',
+        'report/crane_report.xml',
         'wizard/email_work_order_data.xml',
     ],
     'css': ['static/src/css/crane.css'],
     'installable': True,
+    'application': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
