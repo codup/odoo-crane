@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_see_photo" model="ir.ui.view">
+            <field name="name">Photo</field>
+            <field name="model">crane.see.photo</field>
+            <field name="arch" type="xml">
+                <form string="Photo" version="7.0">
+                    <div class="codup_readonly_photo">
+                        <field name="photo" widget="image" colspan="4" nolabel="1"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Photo"
+            res_model="crane.see.photo"
+            src_model="crane.task.inspection.line"
+            target="new"
+            view_mode="form"
+            view_type="form"
+            id="action_view_see_photo"/>
+
+    </data>
+</openerp>

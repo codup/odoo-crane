@@ -1,0 +1,52 @@
+@charset "utf-8";
+.openerp .codup_list_header .oe_list_content > tbody tr[style="font-weight: bold;"],
+.openerp .oe_form_editable .codup_list_header .oe_list_editable .oe_list_content > tbody tr[style="font-weight: bold;"] td.oe_readonly
+{
+    background-color: #EDEDED;
+    background-image: linear-gradient(to bottom, #FCFCFC, #DEDEDE);
+}
+.openerp .oe_list_editable .oe_list_content > thead th[data-id="sequence"]{
+    width: 8px;
+}
+.openerp td.oe_form_invisible + td .codup_readonly_image:hover div.oe_form_field_image_controls {
+    display: none;
+}
+.openerp .codup_sign > img {
+    width: 235px;
+    height: 65px;
+    max-width: 235px;
+    max-height: 65px;
+}
+.openerp td.oe_list_field_image {
+    visibility: hidden;
+}
+.openerp td.oe_list_field_image a {
+    display: none;
+}
+.openerp .codup_list_image .oe_list_editable input.oe_form_binary_file {
+    width: 100px;
+    max-width: 100px;
+}
+.openerp .codup_list_image .oe_list_editable .oe_list_content > thead th[data-id="image_medium"]{
+    width: 90px;
+}
+.openerp .codup_list_image .oe_list_editable .oe_list_content > thead th[data-id="image_medium"] + th{
+    width: 0;
+}
+.openerp .codup_list_image .oe_list_editable .oe_list_content button{
+    margin-left: -20px;
+}
+.openerp span.codup_photo img{
+    width: 100px;
+    max-width: 100px;
+}
+.openerp .oe_form .codup_readonly_photo:hover div.oe_form_field_image_controls {
+    display: none;
+}
+.openerp .oe_form .codup_readonly_photo img {
+    border: none;
+    width: 100%;
+}
+.openerp .oe_form .codup_readonly_photo {
+    text-align: center;
+}
