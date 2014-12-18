@@ -35,6 +35,7 @@ Support following feature:
     """,
     'author': 'CodUP',
     'website': 'http://codup.com',
+    'images': ['static/description/icon.png'],
     'category': 'Enterprise Asset Management',
     'sequence': 0,
     'depends': ['report_webkit','mail','email_template'],
