@@ -55,5 +55,6 @@ Support following feature:
     'installable': True,
     'application': True,
     'price': 1,
+    'currency': 'EUR',
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
