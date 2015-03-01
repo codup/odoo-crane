@@ -54,5 +54,6 @@ Support following feature:
     'css': ['static/src/css/crane.css'],
     'installable': True,
     'application': True,
+    'price': 1,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
