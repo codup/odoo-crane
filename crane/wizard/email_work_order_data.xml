@@ -43,7 +43,7 @@
     </data>
 
     <data noupdate="1">
-        <record id="email_template_work_order" model="email.template">
+        <record id="email_template_work_order" model="mail.template">
             <field name="name">Work Order - Send by Email</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">${object.company_id.name} Work Order (Ref ${object.name or 'n/a' })</field>
