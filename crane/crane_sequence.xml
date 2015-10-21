@@ -2,10 +2,6 @@
 <openerp>
     <data noupdate="1">
 
-        <record id="seq_type_work_order" model="ir.sequence.type">
-            <field name="name">Work Order</field>
-            <field name="code">crane.work.order</field>
-        </record>
         <record id="seq_work_order" model="ir.sequence">
             <field name="name">Work Order</field>
             <field name="code">crane.work.order</field>
@@ -14,10 +10,6 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <record id="seq_type_task" model="ir.sequence.type">
-            <field name="name">Task</field>
-            <field name="code">crane.task</field>
-        </record>
         <record id="seq_task" model="ir.sequence">
             <field name="name">Task</field>
             <field name="code">crane.task</field>
@@ -26,10 +18,6 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <record id="seq_type_certificate" model="ir.sequence.type">
-            <field name="name">Certificate Number</field>
-            <field name="code">crane.equipment</field>
-        </record>
         <record id="seq_certificate" model="ir.sequence">
             <field name="name">Certificate Number</field>
             <field name="code">crane.equipment</field>

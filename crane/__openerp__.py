@@ -38,7 +38,7 @@ Support following feature:
     'images': ['static/description/icon.png'],
     'category': 'Enterprise Asset Management',
     'sequence': 0,
-    'depends': ['report_webkit','mail','email_template'],
+    'depends': ['report_webkit','mail'],
     'demo': ['crane_demo.xml'],
     'data': [
         'wizard/repeat_work_order_view.xml',
@@ -54,5 +54,7 @@ Support following feature:
     'css': ['static/src/css/crane.css'],
     'installable': True,
     'application': True,
+    'price': 9,
+    'currency': 'EUR',
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
