@@ -38,7 +38,7 @@ Support following feature:
     'images': ['static/description/icon.png'],
     'category': 'Enterprise Asset Management',
     'sequence': 0,
-    'depends': ['report_webkit','mail'],
+    'depends': ['mail'],
     'demo': ['crane_demo.xml'],
     'data': [
         'wizard/repeat_work_order_view.xml',
