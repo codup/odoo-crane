@@ -1,6 +1,20 @@
-<html>
-<head>
-    <style type="text/css">
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="work_order">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <!-- Multicompany -->
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+            <t t-set="context" t-value="o._context"></t>
+
+            <div class="page">
+<style type="text/css">
 @font-face {
     font-family: "waukegan";
     font-style: normal;
@@ -86,42 +100,54 @@ table div.codup_underline {
 .codup_header_white + span {
 	margin: 0 70px 0 15px;
 }
-    </style>
-</head>
-<body>
-%for o in objects:
-    %for task in o.task_ids:
-        <br/><br/>
-        %if task.type == 'ins':
-            %if task.subtype == 0:
-                %set first_form = True
-            %else:
-                %set first_form = False
-            %endif
-            %if first_form == True:
+</style>
 
+<!-- %for o in objects: -->
+    <!-- %for task in o.task_ids: -->
+    <t t-foreach="o.task_ids" t-as="task">
+        <br/><br/>
+        <!-- %if task.type == 'ins': -->
+        <t t-if="task.type == 'ins'">
+            <!-- %if task.subtype == 0: -->
+            <t t-if="task.subtype == 0">
+                <!-- %set first_form = True -->
+                <t t-set="first_form" t-value="True"></t>
+            <!-- %else: -->
+            </t>
+            <t t-if="task.subtype != 0">
+                <!-- %set first_form = False -->
+                <t t-set="first_form" t-value="False"></t>
+            <!-- %endif -->
+            </t>
+            <!-- %if first_form == True: -->
+            <t t-if="first_form == True">
+
+            
+            
 
 <!-- start task header -->
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|safe }
+			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
+                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
-			<td colspan="10"></td><td rowspan="2" colspan="3" class="codup_thick_border">${task.certificate}</td>
+			<td colspan="10"></td>
+            <td rowspan="2" colspan="3" class="codup_thick_border"><span t-field="task.certificate"/><!-- ${task.certificate} --></td>
 	    </tr>
 		<tr>
 			<td colspan="10"></td>
 	    </tr>
 		<tr>
-			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span>${task.equipment_id.name} Inspection Certificate</span></td><td colspan="3"></td>
+			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span t-field="task.equipment_id.name"/><span><!-- ${task.equipment_id.name} --> Inspection Certificate</span></td><td colspan="3"></td>
 	    </tr>
 		<tr>
 			<td colspan="2"></td><td colspan="3"></td>
 	    </tr>
 		<tr class="codup_thick_border">
-			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5">${o.customer_id.name}</td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border">${o.name}</td>
+			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5"><span t-field="o.customer_id.name"/><!-- ${o.customer_id.name} --></td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border"><span t-field="o.name"/><!-- ${o.name} --></td>
 	    </tr>
 		<tr class="codup_thick_border">
 	    </tr>
@@ -129,27 +155,42 @@ table div.codup_underline {
 <!-- end task header -->
 	<br/>
 <!-- start equipment feature -->
-	<span class="codup_header">Data: ${task.equipment_id.name}</span>
+	<span class="codup_header">Data: <!-- ${task.equipment_id.name} --></span><span t-field="task.equipment_id.name"/>
 	<table class="codup_feature">
-		<tr>
-%set index=0
-%set length = task.equipment_feature|count
-%set max = 5*3
-	%for feature in task.equipment_feature:
-		%if index < max:
-			%if index and index%3 == 0:
-				</tr><tr>
-			%endif
-			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			%set index=index+1
-			%if ((index == length) and (index%3 != 0)):
-				%for i in range(0, 3-index%3):
-					<td colspan="2"></td><td colspan="2"></td>
-				%endfor
-			%endif
-		%endif
-	%endfor		
-	    </tr>
+		<!-- <tr> -->
+<!-- %set index=0 -->
+<t t-set="index" t-value="0"></t>
+<!-- %set length = task.equipment_feature|count -->
+<t t-set="length" t-value="len(task.equipment_feature)"></t>
+<!-- %set max = 5*3 -->
+<t t-set="max" t-value="5*3"></t>
+	<!-- %for feature in task.equipment_feature: -->
+    <t t-foreach="task.equipment_feature" t-as="feature">
+		<!-- %if index < max: -->
+        <t t-if="index &lt; max">
+			<!-- %if index and index%3 == 0: -->
+            <tr t-if="index and index%3 == 0">
+				<!-- </tr><tr> -->
+			<!-- %endif -->
+            <!-- </t> -->
+                <td colspan="2" class="codup_header"><span t-field="feature.name"/><!-- ${feature.name} --></td><td colspan="2"><span t-field="feature.value"/><!-- ${feature.value or ''} --></td>
+                <!-- %set index=index+1 -->
+                <t t-set="index" t-value="index+1"></t>
+                <!-- %if ((index == length) and (index%3 != 0)): -->
+                <t t-if="((index == length) and (index%3 != 0))">
+                    <!-- %for i in range(0, 3-index%3): -->
+                    <t t-foreach="range(0, 3-index%3)" t-as="i">
+                        <td colspan="2"></td><td colspan="2"></td>
+                    <!-- %endfor -->
+                    </t>
+                <!-- %endif -->
+                </t>
+            </tr>
+		<!-- %endif -->
+        </t>
+	<!-- %endfor	 -->
+    </t>
+	    <!-- </tr> -->
 	</table>
 <!-- end equipment feature -->
 	<br/>
@@ -158,89 +199,110 @@ table div.codup_underline {
 		<thead><tr>
 			<th colspan="3">Inspection Point</th><th colspan="1">OK</th><th colspan="1">NOT OK</th><th colspan="10">Comment</th>
 	    </tr></thead>
-%set index=0
-    %for insp in task.inspection_line_ids:
-        %if index < 13:	
+<!-- %set index=0 -->
+<t t-set="index" t-value="0"></t>
+    <!-- %for insp in task.inspection_line_ids: -->
+    <t t-foreach="task.inspection_line_ids" t-as="insp">
+        <!-- %if index < 13: -->
+        <t t-if="index &lt; 13">
 		<tr>
-			<td colspan="3" class="codup_header">${insp.name}</td>
-			<td colspan="1"
+			<td colspan="3" class="codup_header"><span t-field="insp.name"/><!-- ${insp.name} --></td>
+			<!-- <td colspan="1"
             %if insp.point_value_id.name == 'OK':
                 class="codup_marker"
             %endif
-            ></td>
-            <td colspan="1"
+            ></td> -->
+            <td t-if="insp.point_value_id.name == 'OK'" colspan="1" class="codup_marker"></td>
+            <td t-if="insp.point_value_id.name != 'OK'" colspan="1"></td>
+
+            <!-- <td colspan="1"
             %if insp.point_value_id.name == 'NOT OK':
                 class="codup_marker"
             %endif
-			></td>
-			<td colspan="10">${insp.comment or ''}</td>
+			></td> -->
+            <td t-if="insp.point_value_id.name == 'NOT OK'" colspan="1" class="codup_marker"></td>
+            <td t-if="insp.point_value_id.name != 'NOT OK'" colspan="1"></td>
+			<td colspan="10"><span t-field="insp.comment"/><!-- ${insp.comment or ''} --></td>
 	    </tr>
-        %endif
-        %set index=index+1
-    %endfor
+        <!-- %endif -->
+        </t>
+        <!-- %set index=index+1 -->
+        <t t-set="index" t-value="index+1"></t>
+    <!-- %endfor -->
+    </t>
 	</table>
 <!-- end inspection point form1 -->
 	<br/>
 <!-- start comments -->
 	<span class="codup_header">Overall Comments:</span>
-	<p>${task.notes or ''}</p>
+	<p t-field="task.notes"><!-- ${task.notes or ''} --></p>
 <!-- end comments -->
 	<br/>
 <!-- start inspection task footer -->
 	<table class="codup_header">
 		<tr>
 			<td colspan="6">STATUS:</td><td colspan="4">Safe</td>
-			<td colspan="1" class="codup_thin_border
+			<!-- <td colspan="1" class="codup_thin_border
 			%if task.result == 'safe':
 				codup_marker
 			%endif
-			"></td><td colspan="4"></td>
+			"></td> -->
+            <td t-if="task.result == 'safe'" colspan="1" class="codup_thin_border codup_marker"></td>
+            <td t-if="task.result != 'safe'" colspan="1" class="codup_thin_border"></td>
+            <td colspan="4"></td>
 			<td colspan="4">Not Safe</td>
-			<td colspan="1" class="codup_thin_border
+			<!-- <td colspan="1" class="codup_thin_border
 			%if task.result == 'not_safe':
 				codup_marker
 			%endif
-			"></td><td colspan="10"></td>
+			"></td> -->
+            <td t-if="task.result == 'not_safe'" colspan="1" class="codup_thin_border codup_marker"></td>
+            <td t-if="task.result != 'not_safe'" colspan="1" class="codup_thin_border"></td>
+            <td colspan="10"></td>
 	    </tr>
 	</table>
 	<br/><br/>
 	<table>
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
-			%if task.approve_uid:
+			<!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
-            %endif
-			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
+            %endif -->
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
 <!-- end inspection task footer -->
 
 
-            %endif
-            %if first_form == False:
+            <!-- %endif -->
+            </t>
+            <!-- %if first_form == False: -->
+            <t t-if="first_form == False">
 
 
 <!-- start task header -->
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|safe }
+			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
+            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
-			<td colspan="10"></td><td rowspan="2" colspan="3" class="codup_thick_border">${task.certificate}</td>
+			<td colspan="10"></td><td rowspan="2" colspan="3" class="codup_thick_border"><span t-field="task.certificate"/><!-- ${task.certificate} --></td>
 	    </tr>
 		<tr>
 			<td colspan="10"></td>
 	    </tr>
 		<tr>
-			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span>${task.equipment_id.name} Inspection Report</span></td><td colspan="3"></td>
+			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span t-field="task.equipment_id.name"></span><span><!-- ${task.equipment_id.name} --> Inspection Report</span></td><td colspan="3"></td>
 	    </tr>
 		<tr>
 			<td colspan="2"></td><td colspan="3"></td>
 	    </tr>
 		<tr class="codup_thick_border">
-			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5">${o.customer_id.name}</td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border">${o.name}</td>
+			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5"><span t-field="o.customer_id.name"/><!-- ${o.customer_id.name} --></td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border"><span t-field="o.name"/><!-- ${o.name} --></td>
 	    </tr>
 		<tr class="codup_thick_border">
 	    </tr>
@@ -248,152 +310,247 @@ table div.codup_underline {
 <!-- end task header -->
 	<br/>
 <!-- start equipment feature -->
-	<span class="codup_header">Data: ${task.equipment_id.name}</span>
+	<span class="codup_header">Data: <t t-esc="task.equipment_id.name"/><!-- ${task.equipment_id.name} --></span>
 	<table class="codup_feature">
-		<tr>
-%set index=0
-%set length = task.equipment_feature|count
-%set max=5*3
-	%for feature in task.equipment_feature:
-		%if index < max:
-			%if index and index%3 == 0:
-				</tr><tr>
-			%endif
-			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			%set index=index+1
-			%if ((index == length) and (index%3 != 0)):
-				%for i in range(0, 3-index%3):
-					<td colspan="2"></td><td colspan="2"></td>
-				%endfor
-			%endif
-		%endif
-	%endfor		
-	    </tr>
+		<!-- <tr> -->
+<!-- %set index=0 -->
+<t t-set="index" t-value="0"></t>
+<!-- %set length = task.equipment_feature|count -->
+<t t-set="length" t-value="len(task.equipment_feature)"></t>
+<!-- %set max=5*3 -->
+<t t-set="max" t-value="5*3"></t>
+	<!-- %for feature in task.equipment_feature: -->
+    <t t-foreach="task.equipment_feature" t-as="feature">
+		<!-- %if index < max: -->
+        <t t-if="index &lt; max">
+			<!-- %if index and index%3 == 0: -->
+            <tr t-if="index and index%3 == 0">
+				<!-- </tr><tr> -->
+			<!-- %endif -->
+            <!-- </t> -->
+                <td colspan="2" class="codup_header"><span t-field="feature.name"/><!-- ${feature.name} --></td><td colspan="2"><span t-field="feature.value"/><!-- ${feature.value or ''} --></td>
+                <!-- %set index=index+1 -->
+                <t t-set="index" t-value="index+1"></t>
+                <!-- %if ((index == length) and (index%3 != 0)): -->
+                <t t-if="((index == length) and (index%3 != 0))">
+                    <!-- %for i in range(0, 3-index%3): -->
+                    <t t-foreach="range(0, 3-index%3)" t-as="i">
+                        <td colspan="2"></td><td colspan="2"></td>
+                    <!-- %endfor -->
+                    </t>
+                <!-- %endif -->
+                </t>
+            </tr>
+		<!-- %endif -->
+        </t>
+	<!-- %endfor	 -->
+    </t>
+	    <!-- </tr> -->
 	</table>
 <!-- end equipment feature -->
 	<br/>
 <!-- start inspection point form2 -->
-%set transposed = []
-%for i in range(39):
-    %set tmp_var = transposed.append([])
-    %for j in range(3):
-        %set tmp_var = transposed[i].append(False)
-    %endfor
-%endfor
-%set col_i=0
-%set row_i=0
-%set tab_i=0
-%set first = True
-%set can_iterate = True
-%for point in task.inspection_line_ids:
-    %if can_iterate:
-        %if point.header and not first:
-            %if col_i==2: 
-                %if tab_i == 0:
-                    %set tab_i=20
-                %else: 
-                    %set can_iterate = False
-                %endif
-                %set col_i=0
-            %else:
-                %set col_i=col_i+1
-            %endif
-            %set row_i=0
-        %endif
-        %if row_i < 20:
-            %set tmp_var = transposed[row_i+tab_i].pop(col_i)
-            %set tmp_var = transposed[row_i+tab_i].insert(col_i,point)
-        %endif
-        %set row_i=row_i+1
-        %set first = False
-    %endif
-%endfor
-%set index=0
+<!-- %set transposed = [] -->
+<t t-set="transposed" t-value="[]"></t>
+<!-- %for i in range(39): -->
+<t t-foreach="range(39)" t-as="i">
+    <!-- %set tmp_var = transposed.append([]) -->
+    <t t-set="tmp_var" t-value="transposed.append([])"></t>
+    <!-- %for j in range(3): -->
+    <t t-foreach="range(3)" t-as="j">
+        <!-- %set tmp_var = transposed[i].append(False) -->
+        <t t-set="tmp_var" t-value="transposed[i].append(False)"></t>
+    <!-- %endfor -->
+    </t>
+<!-- %endfor -->
+</t>
+<!-- %set col_i=0 -->
+<t t-set="col_i" t-value="0"></t>
+<!-- %set row_i=0 -->
+<t t-set="row_i" t-value="0"></t>
+<!-- %set tab_i=0 -->
+<t t-set="tab_i" t-value="0"></t>
+<!-- %set first = True -->
+<t t-set="first" t-value="True"></t>
+<!-- %set can_iterate = True -->
+<t t-set="can_iterate" t-value="True"></t>
+<!-- %for point in task.inspection_line_ids: -->
+<t t-foreach="task.inspection_line_ids" t-as="point">
+    <!-- %if can_iterate: -->
+    <t t-if="can_iterate">
+        <!-- %if point.header and not first: -->
+        <t t-if="point.header and not first">
+            <!-- %if col_i==2: --> 
+            <t t-if="col_i==2">
+                <!-- %if tab_i == 0: -->
+                <t t-if="tab_i == 0">
+                    <!-- %set tab_i=20 -->
+                    <t t-set="tab_i" t-value="20"></t>
+                <!-- %else:  -->
+                </t>
+                <t t-if="tab_i != 0">
+                    <!-- %set can_iterate = False -->
+                    <t t-set="can_iterate" t-value="False"></t>
+                <!-- %endif -->
+                </t>
+                <!-- %set col_i=0 -->
+                <t t-set="col_i" t-value="0"></t>
+            <!-- %else: -->
+            </t>
+            <t t-if="col_i!=2">
+                <!-- %set col_i=col_i+1 -->
+                <t t-set="col_i" t-value="col_i+1"></t>
+            <!-- %endif -->
+            </t>
+            <!-- %set row_i=0 -->
+            <t t-set="row_i" t-value="0"></t>
+        <!-- %endif -->
+        </t>
+        <!-- %if row_i < 20: -->
+        <t t-if="row_i &lt; 20">
+            <!-- %set tmp_var = transposed[row_i+tab_i].pop(col_i) -->
+            <t t-set="tmp_var" t-value="transposed[row_i+tab_i].pop(col_i)"></t>
+            <!-- %set tmp_var = transposed[row_i+tab_i].insert(col_i,point) -->
+            <t t-set="tmp_var" t-value="transposed[row_i+tab_i].insert(col_i,point)"></t>
+        <!-- %endif -->
+        </t>
+        <!-- %set row_i=row_i+1 -->
+        <t t-set="row_i" t-value="row_i+1"></t>
+        <!-- %set first = False -->
+        <t t-set="first" t-value="False"></t>
+    <!-- %endif -->
+    </t>
+<!-- %endfor -->
+</t>
+<!-- %set index=0 -->
+<t t-set="index" t-value="0"></t>
 	<table class="codup_inspection">
-	%for row in transposed:
-		%if index < 33:
-			%if row[0] and row[0].header:
+	<!-- %for row in transposed: -->
+    <t t-foreach="transposed" t-as="row">
+		<!-- %if index < 33: -->
+        <t t-if="row_i &lt; 20">
+			<!-- %if row[0] and row[0].header: -->
+            <t t-if="row[0] and row[0].header">
 			<tr class="codup_header_white">
-				<td colspan="
+				<!-- <td colspan="
 				%if row[1]:
 				5
 				%else:
 				15
 				%endif
-				">${row[0].name}</td>
-				%if row[1]:
-					<td colspan="
+				">${row[0].name}</td> -->
+                <td t-if="row[1]" colspan="5"><t t-esc="row[0].name"/><!-- ${row[0].name} --></td>
+                <td t-if="not row[1]" colspan="15"><t t-esc="row[0].name"/><!-- ${row[0].name} --></td>
+				<!-- %if row[1]: -->
+                <t t-if="row[1]">
+					<!-- <td colspan="
 					%if row[2]:
 					5
 					%else:
 					10
 					%endif
-					">${row[1].name}</td>
-					%if row[2]:
-					<td colspan="5">${row[2].name}</td>
-					%endif
-				%endif
+					">${row[1].name}</td> -->
+                    <td t-if="row[2]" colspan="5"><t t-esc="row[1].name"/><!-- ${row[1].name} --></td>
+                    <td t-if="not row[2]" colspan="10"><t t-esc="row[1].name"/><!-- ${row[1].name} --></td>
+					<!-- %if row[2]: -->
+					<td t-if="row[2]" colspan="5"><t t-esc="row[2].name"/><!-- ${row[2].name} --></td>
+					<!-- %endif -->
+				<!-- %endif -->
+                </t>
 			</tr>
 			<tr class="codup_header_white">
 				<td colspan="2"></td><td colspan="1">Good</td><td colspan="1">Repair</td><td colspan="1">Replace</td>
 				<td colspan="2"></td><td colspan="1">Good</td><td colspan="1">Repair</td><td colspan="1">Replace</td>
 				<td colspan="2"></td><td colspan="1">Good</td><td colspan="1">Repair</td><td colspan="1">Replace</td>
 			</tr>
-			%else:
+			<!-- %else: -->
+            </t>
+            <t t-if="not (row[0] and row[0].header)">
 			<tr>
-				<td colspan="2" class="codup_header">${row[0] and row[0].name or ''}</td>
-				<td colspan="1"
+				<td colspan="2" class="codup_header"><t t-esc="row[0] and row[0].name or ''"/><!-- ${row[0] and row[0].name or ''} --></td>
+				<!-- <td colspan="1"
 				%if row[0] and row[0].point_value_id.name == 'GOOD':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[0] and row[0].point_value_id.name == 'GOOD'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[0] and row[0].point_value_id.name == 'GOOD')" colspan="1"></td>
+
+				<!-- <td colspan="1"
 				%if row[0] and row[0].point_value_id.name == 'REPAIR':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[0] and row[0].point_value_id.name == 'REPAIR'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[0] and row[0].point_value_id.name == 'REPAIR')" colspan="1"></td>
+                
+				<!-- <td colspan="1"
 				%if row[0] and row[0].point_value_id.name == 'REPLACE':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="2" class="codup_header">${row[1] and row[1].name or ''}</td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[0] and row[0].point_value_id.name == 'REPLACE'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[0] and row[0].point_value_id.name == 'REPLACE')" colspan="1"></td>
+                
+				<td colspan="2" class="codup_header"><t t-esc="row[1] and row[1].name or ''"/><!-- ${row[1] and row[1].name or ''} --></td>
+				<!-- <td colspan="1"
 				%if row[1] and row[1].point_value_id.name == 'GOOD':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[1] and row[1].point_value_id.name == 'GOOD'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[1] and row[1].point_value_id.name == 'GOOD')" colspan="1"></td>
+                
+				<!-- <td colspan="1"
 				%if row[1] and row[1].point_value_id.name == 'REPAIR':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[1] and row[1].point_value_id.name == 'REPAIR'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[1] and row[1].point_value_id.name == 'REPAIR')" colspan="1"></td>
+                
+				<!-- <td colspan="1"
 				%if row[1] and row[1].point_value_id.name == 'REPLACE':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="2" class="codup_header">${row[2] and row[2].name or ''}</td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[1] and row[1].point_value_id.name == 'REPLACE'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[1] and row[1].point_value_id.name == 'REPLACE')" colspan="1"></td>
+                
+				<td colspan="2" class="codup_header"><t t-esc="row[2] and row[2].name or ''"/><!-- ${row[2] and row[2].name or ''} --></td>
+				<!-- <td colspan="1"
 				%if row[2] and row[2].point_value_id.name == 'GOOD':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[2] and row[2].point_value_id.name == 'GOOD'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[2] and row[2].point_value_id.name == 'GOOD')" colspan="1"></td>
+                
+				<!-- <td colspan="1"
 				%if row[2] and row[2].point_value_id.name == 'REPAIR':
 					class="codup_marker"
 				%endif
-				></td>
-				<td colspan="1"
+				></td> -->
+                <td t-if="row[2] and row[2].point_value_id.name == 'REPAIR'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[2] and row[2].point_value_id.name == 'REPAIR')" colspan="1"></td>
+                
+				<!-- <td colspan="1"
 				%if row[2] and row[2].point_value_id.name == 'REPLACE':
 					class="codup_marker"
 				%endif
-				></td>
+				></td> -->
+                <td t-if="row[2] and row[2].point_value_id.name == 'REPLACE'" colspan="1" class="codup_marker"></td>
+                <td t-if="not (row[2] and row[2].point_value_id.name == 'REPLACE')" colspan="1"></td>
 			</tr>
-			%endif
-		%endif
-		%set index=index+1
-	%endfor
+			<!-- %endif -->
+            </t>
+            
+		<!-- %endif -->
+        </t>
+		<!-- %set index=index+1 -->
+        <t t-set="index" t-value="index+1"></t>
+	<!-- %endfor -->
+    </t>
 	</table>
 <!-- end inspection point form2 -->
 	<br/>
@@ -401,58 +558,70 @@ table div.codup_underline {
 	<table class="codup_header">
 		<tr>
 			<td colspan="6">STATUS:</td><td colspan="4">Safe</td>
-			<td colspan="1" class="codup_thin_border
+			<!-- <td colspan="1" class="codup_thin_border
 			%if task.result == 'safe':
 				codup_marker
 			%endif
-			"></td><td colspan="4"></td>
+			"></td> -->
+            <td t-if="task.result == 'safe'" colspan="1" class="codup_thin_border codup_marker"></td>
+            <td t-if="task.result != 'safe'" colspan="1" class="codup_thin_border"></td>
+            <td colspan="4"></td>
 			<td colspan="4">Not Safe</td>
-			<td colspan="1" class="codup_thin_border
+			<!-- <td colspan="1" class="codup_thin_border
 			%if task.result == 'not_safe':
 				codup_marker
 			%endif
-			"></td><td colspan="10"></td>
+			"></td> -->
+            <td t-if="task.result == 'not_safe'" colspan="1" class="codup_thin_border codup_marker"></td>
+            <td t-if="task.result != 'not_safe'" colspan="1" class="codup_thin_border"></td>
+            <td colspan="10"></td>
 	    </tr>
 	</table>
 	<br/><br/>
 	<table>
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
-			%if task.approve_uid:
+			<!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
-            %endif
-			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
+            %endif -->
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
 <!-- end inspection task footer -->
 
 
-            %endif
-        %endif
-        %if task.type == 'serv':
+            <!-- %endif -->
+            </t>
+        <!-- %endif -->
+        </t>
+        
+        <!-- %if task.type == 'serv': -->
+        <t t-if="task.type == 'serv'">
 
 
 <!-- start task header -->
 	<table>
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
-			${ helper.embed_image('png',company.logo)|safe }
+			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
+            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
-			<td colspan="10"></td><td rowspan="2" colspan="3" class="codup_thick_border">${task.certificate}</td>
+			<td colspan="10"></td><td rowspan="2" colspan="3" class="codup_thick_border"><span t-field="task.certificate"/><!-- ${task.certificate} --></td>
 	    </tr>
 		<tr>
 			<td colspan="10"></td>
 	    </tr>
 		<tr>
-			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span>${task.equipment_id.name} Service Report</span></td><td colspan="3"></td>
+			<td rowspan="2" colspan="10" class="codup_inverse codup_header"><span t-field="task.equipment_id.name"></span><span><!-- ${task.equipment_id.name} --> Service Report</span></td><td colspan="3"></td>
 	    </tr>
 		<tr>
 			<td colspan="2"></td><td colspan="3"></td>
 	    </tr>
 		<tr class="codup_thick_border">
-			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5">${o.customer_id.name}</td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border">${o.name}</td>
+			<td rowspan="2" colspan="2" class="codup_header">CUSTOMER</td><td rowspan="2" colspan="5"><span t-field="o.customer_id.name"/><!-- ${o.customer_id.name} --></td><td rowspan="2" colspan="3" class="codup_header">WORK ORDER #</td><td rowspan="2" colspan="5" class="codup_right_border"><span t-field="o.name"/><!-- ${o.name} --></td>
 	    </tr>
 		<tr class="codup_thick_border">
 	    </tr>
@@ -462,44 +631,60 @@ table div.codup_underline {
 <!-- start WO parametrs -->
 	<table>
         <tr>
-			<td colspan="2"></td><td colspan="8"></td><td colspan="2" class="codup_header">Date</td><td colspan="3">${task.completion_date}</td>
+			<td colspan="2"></td><td colspan="8"></td><td colspan="2" class="codup_header">Date</td><td colspan="3"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
+        </tr>
 		<tr>
-			<td colspan="2" class="codup_header">Customer</td><td colspan="8">${o.customer_id.name}</td><td colspan="2" class="codup_header">Work Order</td><td colspan="3">${o.origin or ''}</td>
+			<td colspan="2" class="codup_header">Customer</td><td colspan="8"><span t-field="o.customer_id.name"/><!-- ${o.customer_id.name} --></td><td colspan="2" class="codup_header">Work Order</td><td colspan="3"><span t-field="o.origin"/><!-- ${o.origin or ''} --></td>
 	    </tr>
 		<tr>
-			<td colspan="2" class="codup_header">Address/Jobsite</td><td colspan="8">${o.location}</td><td colspan="2" class="codup_header">PO #</td><td colspan="3">${o.po_number or ''}</td>
+			<td colspan="2" class="codup_header">Address/Jobsite</td><td colspan="8"><span t-field="o.location"/><!-- ${o.location} --></td><td colspan="2" class="codup_header">PO #</td><td colspan="3"><span t-field="o.po_number"/><!-- ${o.po_number or ''} --></td>
 	    </tr>
 	</table>
 <!-- end WO parametrs -->
 	<br/>
 <!-- start equipment feature -->
-	<span class="codup_header">Data: ${task.equipment_id.name}</span>
+	<span class="codup_header">Data: <t t-esc="task.equipment_id.name"/><!-- Data: ${task.equipment_id.name} --></span>
 	<table class="codup_feature">
-		<tr>
-%set index=0
-%set length = task.equipment_feature|count
-%set max=5*3
-	%for feature in task.equipment_feature:
-		%if index < max:
-			%if index and index%3 == 0:
-				</tr><tr>
-			%endif
-			<td colspan="2" class="codup_header">${feature.name}</td><td colspan="2">${feature.value or ''}</td>
-			%set index=index+1
-			%if ((index == length) and (index%3 != 0)):
-				%for i in range(0, 3-index%3):
-					<td colspan="2"></td><td colspan="2"></td>
-				%endfor
-			%endif
-		%endif
-	%endfor		
-	    </tr>
+		<!-- <tr> -->
+<!-- %set index=0 -->
+<t t-set="index" t-value="0"></t>
+<!-- %set length = task.equipment_feature|count -->
+<t t-set="length" t-value="len(task.equipment_feature)"></t>
+<!-- %set max=5*3 -->
+<t t-set="max" t-value="5*3"></t>
+	<!-- %for feature in task.equipment_feature: -->
+    <t t-foreach="task.equipment_feature" t-as="feature">
+		<!-- %if index < max: -->
+        <t t-if="index &lt; max">
+			<!-- %if index and index%3 == 0: -->
+            <tr t-if="index and index%3 == 0">
+				<!-- </tr><tr> -->
+			<!-- %endif -->
+            <!-- </t> -->
+                <td colspan="2" class="codup_header"><span t-field="feature.name"/><!-- ${feature.name} --></td><td colspan="2"><span t-field="feature.value"/><!-- ${feature.value or ''} --></td>
+                <!-- %set index=index+1 -->
+                <t t-set="index" t-value="index+1"></t>
+                <!-- %if ((index == length) and (index%3 != 0)): -->
+                <t t-if="((index == length) and (index%3 != 0))">
+                    <!-- %for i in range(0, 3-index%3): -->
+                    <t t-foreach="range(0, 3-index%3)" t-as="i">
+                        <td colspan="2"></td><td colspan="2"></td>
+                    <!-- %endfor -->
+                    </t>
+                <!-- %endif -->
+                </t>
+            </tr>
+		<!-- %endif -->
+        </t>
+	<!-- %endfor -->	
+    </t>
+	    <!-- </tr> -->
 	</table>
 <!-- end equipment feature -->
 	<br/>
 <!-- start comments -->
 	<span class="codup_header_white">Description of Work</span>
-	<p>${task.description or ''}</p>
+	<p t-field="task.description"><!-- ${task.description or ''} --></p>
 <!-- end comments -->
 	<br/>
 <!-- start part&labor -->
@@ -507,15 +692,21 @@ table div.codup_underline {
 		<tr class="codup_header_gray">
 			<td colspan="1">QTY</td><td colspan="1">Part Number</td><td colspan="7">Material (Stock)</td>
 	    </tr>
-    %set index=0
-	%for part in task.part_line_ids:
-		%if index < 5:
+    <!-- %set index=0 -->
+    <t t-set="index" t-value="0"></t>
+	<!-- %for part in task.part_line_ids: -->
+    <t t-foreach="task.part_line_ids" t-as="part">
+		<!-- %if index < 5: -->
+        <t t-if="index &lt; 5">
 		<tr>
-			<td colspan="1">${part.qty}</td><td colspan="1">${part.name}</td><td colspan="7">${part.description}</td>
+			<td colspan="1"><span t-field="part.qty"/><!-- ${part.qty} --></td><td colspan="1"><span t-field="part.name"/><!-- ${part.name} --></td><td colspan="7"><span t-field="part.description"/><!-- ${part.description} --></td>
 	    </tr>
-        %endif
-        %set index=index+1
-	%endfor	
+        <!-- %endif -->
+        </t>
+        <!-- %set index=index+1 -->
+        <t t-set="index" t-value="index+1"></t>
+	<!-- %endfor	 -->
+    </t>
 		<tr>
 			<td rowspan="3" colspan="2" class="codup_header_white">Serviceman</td><td colspan="7" class="codup_header_dark_gray">Hours Shown Include Travel Time</td>
 	    </tr>
@@ -525,98 +716,141 @@ table div.codup_underline {
 		<tr class="codup_header_gray">
 			<td colspan="1">AM</td><td colspan="1">PM</td><td colspan="1">AM</td><td colspan="1">PM</td>
 	    </tr>
-    %set index=0
-	%for labor in task.labor_line_ids:
-		%if index < 5:
+    <!-- %set index=0 -->
+    <t t-set="index" t-value="0"></t>
+	<!-- %for labor in task.labor_line_ids: -->
+    <t t-foreach="task.labor_line_ids" t-as="labor">
+		<!-- %if index < 5: -->
+        <t t-if="index &lt; 5">
 		<tr class="codup_center">
-			<td colspan="2">${labor.user_id.name}</td>
-			<td colspan="1">
-            %set of_hours=user.partner_id.tz_offset[0:3]|int
-            %set of_minutes=(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])|int
-            %set start_datetime = datetime.strptime(labor.start_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
+			<td colspan="2"><span t-field="labor.user_id.name"/><!-- ${labor.user_id.name} --></td>
+            <!-- %set of_hours=user.partner_id.tz_offset[0:3]|int -->
+            <t t-set="of_hours" t-value="int(user.partner_id.tz_offset[0:3])"></t>
+            <!-- %set of_minutes=(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])|int -->
+            <t t-set="of_minutes" t-value="int(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])"></t>
+            <!-- %set start_datetime = datetime.strptime(labor.start_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes) -->
+            <t t-set="start_datetime" t-value="datetime.strptime(labor.start_date, '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
+			<!-- <td colspan="1">
+            
 			%if start_datetime.strftime("%H")|int < 12:
 				${start_datetime.strftime("%I:%M")}
 			%endif
-			</td>
-			<td colspan="1">
+			</td> -->
+            <td t-if="int(start_datetime.strftime('%H')) &lt; 12" colspan="1"><t t-esc="start_datetime.strftime('%I:%M')"/></td>
+            <td t-if="not ( int(start_datetime.strftime('%H')) &lt; 12)" colspan="1"></td>
+            
+			<!-- <td colspan="1">
             %if start_datetime.strftime("%H")|int >= 12:
 				${start_datetime.strftime("%I:%M")}
 			%endif
-			</td>
-			<td colspan="1">
-            %set end_datetime = datetime.strptime(labor.end_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes)
+			</td> -->
+            <td t-if="int(start_datetime.strftime('%H')) &lt; 12" colspan="1"></td>
+            <td t-if="not ( int(start_datetime.strftime('%H')) &lt; 12)" colspan="1"><t t-esc="start_datetime.strftime('%I:%M')"/></td>
+            <!-- %set end_datetime = datetime.strptime(labor.end_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes) -->
+            <t t-set="end_datetime" t-value="datetime.strptime(labor.end_date, '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
+            
+			<!-- <td colspan="1">
+            
 			%if end_datetime.strftime("%H")|int < 12:
 				${end_datetime.strftime("%I:%M")}
 			%endif
-			</td>
-			<td colspan="1">
+			</td> -->
+            <td t-if="int(end_datetime.strftime('%H')) &lt; 12" colspan="1"><t t-esc="end_datetime.strftime('%I:%M')"/></td>
+            <td t-if="not ( int(end_datetime.strftime('%H')) &lt; 12)" colspan="1"></td>
+            
+			<!-- <td colspan="1">
             %if end_datetime.strftime("%H")|int >= 12:
 				${end_datetime.strftime("%I:%M")}
 			%endif
-			</td>
-			<td colspan="1"
+			</td> -->
+            <td t-if="end_datetime.strftime('%H') &lt; 12" colspan="1"></td>
+            <td t-if="not (end_datetime.strftime('%H') &lt; 12)" colspan="1"><t t-esc="end_datetime.strftime('%I:%M')"/></td>
+            
+			<!-- <td colspan="1"
 			%if labor.type == 'regular':
 				class="codup_marker"
 			%endif
-			></td>
-			<td colspan="1"
+			></td> -->
+            <td t-if="labor.type == 'regular'" colspan="1" class="codup_marker"></td>
+            <td t-if="labor.type != 'regular'" colspan="1"></td>
+            
+			<!-- <td colspan="1"
 			%if labor.type == 'overtime':
 				class="codup_marker"
 			%endif
-			></td>
-			<td colspan="1"
+			></td> -->
+            <td t-if="labor.type == 'overtime'" colspan="1" class="codup_marker"></td>
+            <td t-if="labor.type != 'overtime'" colspan="1"></td>
+            
+			<!-- <td colspan="1"
 			%if labor.type == 'double':
 				class="codup_marker"
 			%endif
-			></td>
+			></td> -->
+            <td t-if="labor.type == 'double'" colspan="1" class="codup_marker"></td>
+            <td t-if="labor.type != 'double'" colspan="1"></td>
 	    </tr>
-        %endif
-        %set index=index+1
-	%endfor	
+        <!-- %endif -->
+        </t>
+        <!-- %set index=index+1 -->
+        <t t-set="index" t-value="index+1"></t>
+	<!-- %endfor	 -->
+    </t>
 	</table>
 <!-- end part&labor -->
 	<br/>
 <!-- start service task footer -->
 	<span class="codup_header_white">JOB COMPLETED:</span>
-	<span>
+	<!-- <span>
 	%if task.state == 'done':
 		YES
 	%else:
 		NO
 	%endif
-	</span>
+	</span> -->
+    <span t-if="task.state == 'done'">YES</span>
+    <span t-if="task.state != 'done'">NO</span>
 	<span class="codup_header_white">FOLLOW UP:</span>
-	<span>
+	<!-- <span>
 	%if o.origin:
 		YES
 	%else:
 		NO
 	%endif
-	</span>
+	</span> -->
+    <span t-if="o.origin">YES</span>
+    <span t-if="not o.origin">NO</span>
 	<span class="codup_header_white">REPORT REVIEW WITH CUSTOMER:</span>
-	<span>
+	<!-- <span>
 	%if o.reviewed:
 		YES
 	%else:
 		NO
 	%endif
-	</span>
+	</span> -->
+    <span t-if="o.reviewed">YES</span>
+    <span t-if="not o.reviewed">NO</span>
     <br/><br/>
 	<table>
 		<tr class="codup_underline">
 			<td colspan="1" class="codup_header">Technician's Signature</td><td colspan="1" class="codup_signature">
-            %if task.approve_uid:
+            <!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
-            %endif
-			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1">${task.completion_date}</td>
+            %endif -->
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
 <!-- end service task footer -->
-
-
-        %endif
+        <!-- %endif -->
+        </t>
     <p style="page-break-after: always"></p>
-    %endfor
-%endfor
-</body>
-</html>
+    <!-- %endfor -->
+    </t>
+<!-- %endfor -->
+            </div>
+        </t>
+    </t>
+</template>
+</data>
+</openerp>

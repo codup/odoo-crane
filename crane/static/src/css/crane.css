@@ -1,6 +1,5 @@
 @charset "utf-8";
-.openerp .codup_list_header .oe_list_content > tbody tr[style="font-weight: bold;"],
-.openerp .oe_form_editable .codup_list_header .oe_list_editable .oe_list_content > tbody tr[style="font-weight: bold;"] td.oe_readonly
+.codup_list_header .o_list_view > tbody tr[style="font-weight: bold;"]
 {
     background-color: #EDEDED;
     background-image: linear-gradient(to bottom, #FCFCFC, #DEDEDE);
@@ -17,36 +16,45 @@
     max-width: 235px;
     max-height: 65px;
 }
-.openerp td.oe_list_field_image {
-    visibility: hidden;
+.codup_list_image td[data-field="image_medium"] {
+    color: transparent;
 }
-.openerp td.oe_list_field_image a {
+.codup_list_image td[data-field="image_medium"] a {
     display: none;
 }
 .openerp .codup_list_image .oe_list_editable input.oe_form_binary_file {
     width: 100px;
     max-width: 100px;
 }
-.openerp .codup_list_image .oe_list_editable .oe_list_content > thead th[data-id="image_medium"]{
-    width: 90px;
+.codup_list_image .o_list_editable  thead th[data-id="image_medium"]{
+    width: 100px;
 }
-.openerp .codup_list_image .oe_list_editable .oe_list_content > thead th[data-id="image_medium"] + th{
+.codup_list_image .o_list_editable  thead th[data-id="image_medium"] + th{
     width: 0;
 }
-.openerp .codup_list_image .oe_list_editable .oe_list_content button{
-    margin-left: -20px;
+.codup_list_image .o_list_editable .o_list_button button{
+    margin-left: -30px;
 }
-.openerp span.codup_photo img{
+.codup_photo .o_form_image_controls {
     width: 100px;
     max-width: 100px;
 }
-.openerp .oe_form .codup_readonly_photo:hover div.oe_form_field_image_controls {
+.codup_photo img{
+    width: 100px;
+    max-width: 100px;
+    position: absolute;
+    top: 0;
+    left: auto;
+    bottom: auto;
+    right: 0;
+}
+.codup_readonly_photo:hover div.o_form_image_controls {
     display: none;
 }
-.openerp .oe_form .codup_readonly_photo img {
+.codup_readonly_photo img {
     border: none;
     width: 100%;
 }
-.openerp .oe_form .codup_readonly_photo {
+.codup_readonly_photo {
     text-align: center;
 }

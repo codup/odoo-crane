@@ -1,28 +1,14 @@
 ﻿# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014 CodUP (<http://codup.com>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Odoo
+#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo import api, fields, models, _
 
-class crane_repeat_work_order(osv.osv_memory):
+class crane_repeat_work_order(models.TransientModel):
     _name = 'crane.repeat.work.order'
     _description = 'Repeat Work Order'
 
@@ -32,36 +18,27 @@ class crane_repeat_work_order(osv.osv_memory):
         ('all', 'All')
     ]
 
-    def _is_completed(self, cr, uid, context=None):
-        if context is None:
-            context = {}
-        orders = self.pool.get('crane.work.order')
-        for wo in orders.browse(cr, uid, context.get('active_ids', []), context=context):
+
+    @api.model
+    def _is_completed(self):
+        orders = self.env['crane.work.order']
+        for wo in orders.browse(self._context.get('active_id')):
             if wo.state != 'done':
                 return False
         return True
 
-    _columns = {
-        'type': fields.selection(TYPE_SELECTION, 'Repeat Inspection Task', required=True),
-        'completed': fields.boolean('Completed'),
-    }
+    type = fields.Selection(TYPE_SELECTION, 'Repeat Inspection Task', required=True, default='all')
+    completed = fields.Boolean('Completed', default=_is_completed)
 
-    _defaults = {
-        'type': 'all',
-        'completed': _is_completed,
-    }
-
-    def repeat_wo(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        orders = self.pool.get('crane.work.order')
-        data = self.read(cr, uid, ids)
+    @api.multi
+    def repeat_wo(self):
+        orders = self.env['crane.work.order']
+        data = self.read()
         if data: data=data[0]
         else: 
             data={'type':'all'}
-            context = {'active_ids':ids}
         last_id = False
-        for wo in orders.browse(cr, uid, context.get('active_ids', []), context=context):
+        for wo in orders.browse(self._context.get('active_ids', self.ids)):
             values = {
                     'customer_id': wo.customer_id.id,
                     'origin': wo.name,
@@ -86,14 +63,14 @@ class crane_repeat_work_order(osv.osv_memory):
                             'inspection_line_ids': new_inspection_lines,
                             }])
                 values['task_ids'] = new_task_lines
-            last_id = orders.create(cr, uid, values, context=context)
+            last_id = orders.create(values)
         if last_id:
             return {
                 'name': _('Work Order'),
                 'view_type': 'form',
                 'view_mode': 'form',
                 'res_model': 'crane.work.order',
-                'res_id': int(last_id),
+                'res_id': last_id.id,
                 'view_id': False,
                 'type': 'ir.actions.act_window',
             }

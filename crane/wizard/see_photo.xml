@@ -8,8 +8,12 @@
             <field name="arch" type="xml">
                 <form string="Photo" version="7.0">
                     <div class="codup_readonly_photo">
+                        <field name="inspection_point_id" invisible="1"/>
                         <field name="photo" widget="image" colspan="4" nolabel="1"/>
                     </div>
+                    <footer>
+                        <button string="Close" class="btn-default" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>

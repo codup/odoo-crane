@@ -30,7 +30,7 @@
                         <group class="oe_right" col="1">
                             <div>Use template
                                 <field name="template_id" nolabel="1"
-                                    on_change="onchange_template_id(template_id, composition_mode, model, res_id, context)"/>
+                                    on_change="onchange_template_id(template_id, composition_mode, model, res_id)"/>
                             </div>
                             <button icon="/email_template/static/src/img/email_template_save.png"
                                 type="object" name="save_as_template" string="Save as new template" class="oe_link"
@@ -50,7 +50,7 @@
             <field name="email_recipients">${object.customer_id.id}</field>
             <field name="model_id" ref="crane.model_crane_work_order"/>
             <field name="auto_delete" eval="True"/>
-            <field name="report_template" ref="report_crane_work_order"/>
+            <!-- <field name="report_template" ref="report_crane_work_order"/> -->
             <field name="report_name">${(object.name or '').replace('/','_')}</field>
             <field name="lang">${object.customer_id.lang}</field>
             <field name="body_html"><![CDATA[

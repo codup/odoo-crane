@@ -38,7 +38,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="customer_id" on_change="onchange_customer(customer_id)" required="1" attrs="{'readonly': [('state','in',['in_process','done'])]}"/>
+                                <field name="customer_id" required="1" attrs="{'readonly': [('state','in',['in_process','done'])]}"/>
                                 <field name="location"/>
                                 <field name="date"  readonly="1"/>
                                 <field name="origin" readonly="1"/>
@@ -54,6 +54,8 @@
                         </group>
                         <group>
                             <field name="task_ids" nolabel="1" states="draft" context="{'tree_view_ref': 'crane.crane_task_tree_view'}"/>
+                        </group>
+                        <group>
                             <field name="task_copy_ids" nolabel="1" states="in_process,done" context="{'tree_view_ref': 'crane.crane_task_tree_view1'}" attrs="{'readonly': [('state','=','done')]}"/>
                         </group>
                         <group string="Description">
@@ -105,8 +107,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="type" on_change="onchange_equipment(type, equipment_id, inspection_line_ids)" attrs="{'readonly': [('state','in',['in_progress','done'])]}"/>
-                                <field name="equipment_id" on_change="onchange_equipment(type, equipment_id, inspection_line_ids)" attrs="{'readonly': [('state','in',['in_progress','done'])]}"/>
+                                <field name="type" attrs="{'readonly': [('state','in',['in_progress','done'])]}"/>
+                                <field name="equipment_id" attrs="{'readonly': [('state','in',['in_progress','done'])]}"/>
                                 <field name="equipment_type"/>
                                 <field name="certificate"/>
                             </group>
@@ -141,8 +143,8 @@
                                                 <field name="point_value_id" attrs="{'invisible':[('header','=',True)]}" options='{"no_open": True}'
                                                        domain="[('point_type_id','=',point_type_id)]"/>
                                                 <field name="comment" attrs="{'invisible':[('header','=',True)]}"/>
-                                                <field name="image_medium" widget="image" class="codup_photo" attrs="{'invisible':[('header','=',True)]}"/>
-                                                <button icon="terp-stock_zoom" string="Photo of Point" name="%(action_view_see_photo)d" type="action" attrs="{'invisible':['|',('header','=',True),('image_medium','=',False)]}"/>
+                                                <field name="image_medium" widget="image" string="Photo of Point" class="codup_photo" attrs="{'invisible':[('header','=',True)]}"/>
+                                                <button icon="fa-picture-o" string="Photo of Point" name="%(action_view_see_photo)d" type="action" attrs="{'invisible':['|',('header','=',True),('image_medium','=',False)]}"/>
                                             </tree>
                                         </field>
                                     </div>
@@ -161,12 +163,12 @@
                             </page>
                             <page string="Labor">
                                 <group>
-                                    <field name="labor_line_ids" nolabel="1" on_change="onchange_labor(labor_line_ids)" attrs="{'readonly': [('state','=','done')]}">
+                                    <field name="labor_line_ids" nolabel="1" attrs="{'readonly': [('state','=','done')]}">
                                         <tree editable="bottom">
                                             <field name="user_id"/>
-                                            <field name="start_date" on_change="onchange_time(start_date,end_date,duration)"/>
-                                            <field name="end_date" on_change="onchange_time(start_date,end_date,duration)"/>
-                                            <field name="duration" widget="float_time" on_change="onchange_duration(start_date,end_date,duration)"/>
+                                            <field name="start_date"/>
+                                            <field name="end_date"/>
+                                            <field name="duration" widget="float_time"/>
                                             <field name="type"/>
                                             <field name="comment"/>
                                         </tree>
@@ -220,7 +222,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="equipment_type_id" on_change="onchange_type(equipment_type_id, feature_line_ids)"/>
+                                <field name="equipment_type_id"/>
                                 <field name="customer_id"/>
                                 <field name="certificate" attrs="{'invisible':[('certificate','=',False)]}" readonly="1"/>
                             </group>
