@@ -27,6 +27,8 @@ Support following feature:
     'depends': ['mail'],
     'demo': ['crane_demo.xml'],
     'data': [
+        'security/crane_security.xml',
+        'security/ir.model.access.csv',
         'views/crane.xml',
         'wizard/repeat_work_order_view.xml',
         'wizard/see_photo.xml',
