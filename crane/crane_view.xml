@@ -263,6 +263,7 @@
         <menuitem name="Configuration"
             id="menu_crane_configuration"
             parent="base.menu_crane_root"
+            groups="crane.group_crane_manager"
             sequence="9"/>
 
         <record id="crane_equipment_type_form_view" model="ir.ui.view">
