@@ -1,14 +1,14 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
 {
     'name': 'Crane & Hoist',
-    'version': '1.3',
+    'version': '1.4',
     'summary': 'Inspection and Service System',
     'description': """
 Inspection and Service System for Crane & Hoist.
@@ -46,4 +46,3 @@ Support following feature:
     'price': 9,
     'currency': 'EUR',
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
