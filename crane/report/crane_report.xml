@@ -24,8 +24,5 @@
             file="crane.work_order" 
             string="Work Order"
             report_type="qweb-pdf"/>
-        <record id="report_crane_work_order" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="crane.paperformat_a4"/>
-        </record>
     </data>
 </openerp>
