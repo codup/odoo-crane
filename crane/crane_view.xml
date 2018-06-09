@@ -135,7 +135,7 @@
                                 <group>
                                     <div class="codup_list_header codup_list_image">
                                         <field name="inspection_line_ids" nolabel="1" attrs="{'readonly': [('state','=','done')]}">
-                                            <tree group_by="parent" editable="bottom" create="false" delete="false" fonts="bold:header==True">
+                                            <tree group_by="parent" editable="bottom" create="false" delete="false" decoration-bf="header == True">
                                                 <field name="header" invisible="1"/>
                                                 <field name="sequence" invisible="1"/>
                                                 <field name="name" readonly="1"/>
@@ -288,7 +288,7 @@
                         <group string="Inspection Points">
                             <div class="codup_list_header">
                                 <field name="inspection_ids" nolabel="1">
-                                    <tree string="Inspection Points" editable="bottom" fonts="bold:header==True">
+                                    <tree string="Inspection Points" editable="bottom" decoration-bf="header == True">
                                         <field name="sequence" widget="handle"/>
                                         <field name="name"/>
                                         <field name="header"/>

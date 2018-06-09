@@ -1,5 +1,5 @@
 @charset "utf-8";
-.codup_list_header .o_list_view > tbody tr[style="font-weight: bold;"]
+.codup_list_header tr.text-bf
 {
     background-color: #EDEDED;
     background-image: linear-gradient(to bottom, #FCFCFC, #DEDEDE);
