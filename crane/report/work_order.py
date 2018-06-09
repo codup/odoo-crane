@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -25,5 +25,3 @@ class CraneWorkOrderReport(models.AbstractModel):
             'docs': selected_modules,
         }
         return Report.render('crane.work_order', docargs)
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

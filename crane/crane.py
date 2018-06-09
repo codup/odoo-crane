@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -414,5 +414,3 @@ class crane_task_part_line(models.Model):
     task_id = fields.Many2one('crane.task', 'Task', ondelete='cascade')
     description = fields.Char('Description', size=64)
     qty = fields.Float('Quantity')
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

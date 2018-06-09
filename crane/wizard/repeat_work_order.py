@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -75,5 +75,3 @@ class crane_repeat_work_order(models.TransientModel):
                 'type': 'ir.actions.act_window',
             }
         return {'type': 'ir.actions.act_window_close',}
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

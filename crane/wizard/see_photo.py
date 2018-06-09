@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2016 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -18,5 +18,3 @@ class crane_see_photo(models.TransientModel):
 
     inspection_point_id = fields.Many2one('crane.task.inspection.line', 'Inspection Point', default=get_inspection_point)
     photo = fields.Binary(related='inspection_point_id.image')
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
