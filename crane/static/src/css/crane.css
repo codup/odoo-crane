@@ -19,7 +19,7 @@
 .codup_list_image td[data-field="image_medium"] {
     color: transparent;
 }
-.codup_list_image td[data-field="image_medium"] a {
+.codup_list_image .codup_photo img {
     display: none;
 }
 .openerp .codup_list_image .oe_list_editable input.oe_form_binary_file {
