@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Odoo
@@ -255,7 +255,7 @@ class crane_task(models.Model):
     approve_uid = fields.Many2one('res.users', 'Approved by')
 
 
-    @api.onchange('type','equipment_id','inspection_line_ids')
+    @api.onchange('type','equipment_id')
     def onchange_equipment(self):
         new_inspection_lines = []
         if self.equipment_id:
@@ -336,8 +336,14 @@ class crane_task_inspection_line(models.Model):
         ('yes', 'YES'),
         ('no', 'NO')
     ]
+	
+    @api.depends('name')
+    def _get_name(self):
+        for line in self:
+            line.name_ro = line.name
 
     name = fields.Char('Point Name', size=64, required=True, translate=True)
+    name_ro = fields.Char('Point Name', size=64, translate=True, compute='_get_name')
     task_id = fields.Many2one('crane.task', 'Task', ondelete='cascade')
     point_value_id = fields.Many2one('crane.inspection.point.value', 'Status', ondelete='restrict')
     comment = fields.Char('Comment', size=64)

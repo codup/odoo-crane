@@ -138,7 +138,8 @@
                                             <tree group_by="parent" editable="bottom" create="false" delete="false" decoration-bf="header == True">
                                                 <field name="header" invisible="1"/>
                                                 <field name="sequence" invisible="1"/>
-                                                <field name="name" readonly="1"/>
+												<field name="name" invisible="1"/>
+												<field name="name_ro"/>
                                                 <field name="point_type_id" invisible="1"/>
                                                 <field name="point_value_id" attrs="{'invisible':[('header','=',True)]}" options='{"no_open": True}'
                                                        domain="[('point_type_id','=',point_type_id)]"/>
