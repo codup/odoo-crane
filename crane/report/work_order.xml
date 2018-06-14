@@ -2,7 +2,7 @@
 <openerp>
 <data>
 <template id="work_order">
-    <t t-call="report.html_container">
+    <t t-call="web.external_layout">
         <t t-foreach="docs" t-as="o">
             <!-- Multicompany -->
             <t t-if="o and 'company_id' in o">
@@ -167,7 +167,7 @@ table div.codup_underline {
 	<!-- %for feature in task.equipment_feature: -->
     <t t-foreach="task.equipment_feature" t-as="feature">
 		<!-- %if index < max: -->
-        <t t-if="index &lt; max">
+        <t t-if="index &lt; 15">
 			<!-- %if index and index%3 == 0: -->
             <tr t-if="index and index%3 == 0">
 				<!-- </tr><tr> -->
@@ -322,7 +322,7 @@ table div.codup_underline {
 	<!-- %for feature in task.equipment_feature: -->
     <t t-foreach="task.equipment_feature" t-as="feature">
 		<!-- %if index < max: -->
-        <t t-if="index &lt; max">
+        <t t-if="index &lt; 15">
 			<!-- %if index and index%3 == 0: -->
             <tr t-if="index and index%3 == 0">
 				<!-- </tr><tr> -->
@@ -655,7 +655,7 @@ table div.codup_underline {
 	<!-- %for feature in task.equipment_feature: -->
     <t t-foreach="task.equipment_feature" t-as="feature">
 		<!-- %if index < max: -->
-        <t t-if="index &lt; max">
+        <t t-if="index &lt; 15">
 			<!-- %if index and index%3 == 0: -->
             <tr t-if="index and index%3 == 0">
 				<!-- </tr><tr> -->
@@ -763,8 +763,8 @@ table div.codup_underline {
 				${end_datetime.strftime("%I:%M")}
 			%endif
 			</td> -->
-            <td t-if="end_datetime.strftime('%H') &lt; 12" colspan="1"></td>
-            <td t-if="not (end_datetime.strftime('%H') &lt; 12)" colspan="1"><t t-esc="end_datetime.strftime('%I:%M')"/></td>
+            <td t-if="int(end_datetime.strftime('%H')) &lt; 12" colspan="1"></td>
+            <td t-if="not (int(end_datetime.strftime('%H')) &lt; 12)" colspan="1"><t t-esc="end_datetime.strftime('%I:%M')"/></td>
             
 			<!-- <td colspan="1"
 			%if labor.type == 'regular':

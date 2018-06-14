@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Odoo
@@ -12,16 +12,13 @@ from datetime import datetime, timedelta
 class CraneWorkOrderReport(models.AbstractModel):
     _name = 'report.crane.work_order'
 
-    @api.model
-    def render_html(self, docids, data=None):
-        Report = self.env['report']
-        report = Report._get_report_from_name('crane.work_order')
-        selected_modules = self.env[report.model].browse(docids)
-        docargs = {
+    @api.multi
+    def get_report_values(self, docids, data=None):
+        docs = self.env['crane.work.order'].browse(docids)
+        return {
             'datetime': datetime,
             'timedelta': timedelta,
-            'doc_ids': docids,
-            'doc_model': report.model,
-            'docs': selected_modules,
+            'doc_ids': docs.ids,
+            'doc_model': 'crane.work.order',
+            'docs': docs
         }
-        return Report.render('crane.work_order', docargs)
