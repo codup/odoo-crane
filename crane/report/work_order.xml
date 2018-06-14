@@ -2,7 +2,7 @@
 <openerp>
 <data>
 <template id="work_order">
-    <t t-call="web.external_layout">
+    <t t-call="web.basic_layout">
         <t t-foreach="docs" t-as="o">
             <!-- Multicompany -->
             <t t-if="o and 'company_id' in o">
@@ -130,7 +130,7 @@ table div.codup_underline {
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
 			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
-                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
+                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -268,7 +268,7 @@ table div.codup_underline {
 			<!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif -->
-            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % to_text(task.approve_uid.signature_image)" style="width:235px;height:65px;"/>
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
@@ -286,7 +286,7 @@ table div.codup_underline {
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
 			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
-            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
+            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -584,7 +584,7 @@ table div.codup_underline {
 			<!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif -->
-            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % to_text(task.approve_uid.signature_image)" style="width:235px;height:65px;"/>
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
@@ -605,7 +605,7 @@ table div.codup_underline {
 		<tr>
 			<td rowspan="4" colspan="2" class="logo">
 			<!-- ${ helper.embed_image('png',company.logo)|safe } -->
-            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"/>
+            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
 			</td><td colspan="10"></td><td colspan="3" class="codup_thick_border codup_header">CERTIFICATE #</td>
 	    </tr>
 		<tr>
@@ -837,7 +837,7 @@ table div.codup_underline {
             <!-- %if task.approve_uid:
                 ${ helper.embed_image('png',task.approve_uid.signature_image,235,65)|safe }
             %endif -->
-            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % task.approve_uid.signature_image" style="width:235px;height:65px;"/>
+            <img t-if="task.approve_uid" t-att-src="'data:image/png;base64,%s' % to_text(task.approve_uid.signature_image)" style="width:235px;height:65px;"/>
 			</td><td colspan="1" class="codup_header_right">Date</td><td colspan="1"><span t-field="task.completion_date"/><!-- ${task.completion_date} --></td>
 	    </tr>
 	</table>
