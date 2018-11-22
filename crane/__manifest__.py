@@ -8,7 +8,7 @@
 
 {
     'name': 'Crane & Hoist',
-    'version': '1.4',
+    'version': '1.5',
     'summary': 'Inspection and Service System',
     'description': """
 Inspection and Service System for Crane & Hoist.
@@ -43,6 +43,6 @@ Support following feature:
     ],
     'installable': True,
     'application': True,
-    'price': 9,
+    'price': 19,
     'currency': 'EUR',
 }
