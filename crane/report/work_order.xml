@@ -729,7 +729,7 @@ table div.codup_underline {
             <!-- %set of_minutes=(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])|int -->
             <t t-set="of_minutes" t-value="int(user.partner_id.tz_offset[0] + user.partner_id.tz_offset[3:5])"></t>
             <!-- %set start_datetime = datetime.strptime(labor.start_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes) -->
-            <t t-set="start_datetime" t-value="datetime.strptime(labor.start_date, '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
+            <t t-set="start_datetime" t-value="datetime.strptime(str(labor.start_date), '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
 			<!-- <td colspan="1">
             
 			%if start_datetime.strftime("%H")|int < 12:
@@ -747,7 +747,7 @@ table div.codup_underline {
             <td t-if="int(start_datetime.strftime('%H')) &lt; 12" colspan="1"></td>
             <td t-if="not ( int(start_datetime.strftime('%H')) &lt; 12)" colspan="1"><t t-esc="start_datetime.strftime('%I:%M')"/></td>
             <!-- %set end_datetime = datetime.strptime(labor.end_date, "%Y-%m-%d %H:%M:%S") + timedelta(hours=of_hours,minutes=of_minutes) -->
-            <t t-set="end_datetime" t-value="datetime.strptime(labor.end_date, '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
+            <t t-set="end_datetime" t-value="datetime.strptime(str(labor.end_date), '%Y-%m-%d %H:%M:%S') + timedelta(hours=of_hours,minutes=of_minutes)"></t>
             
 			<!-- <td colspan="1">
             

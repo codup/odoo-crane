@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Odoo
@@ -13,7 +13,7 @@ class CraneWorkOrderReport(models.AbstractModel):
     _name = 'report.crane.work_order'
 
     @api.multi
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         docs = self.env['crane.work.order'].browse(docids)
         return {
             'datetime': datetime,
