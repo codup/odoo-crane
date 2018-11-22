@@ -67,13 +67,6 @@
             <field eval="1" name="use_parent_address"/>
             <field name="function">Maintenance Supervisor</field>
         </record>
-        
-        <record id="base.ir_mail_server_localhost0" model="ir.mail_server">
-            <field name="smtp_host">smtp.mail.ru</field>
-            <field name="smtp_user">codup-test</field>
-            <field name="smtp_pass">q1234567</field>
-        </record>
-
 
         <record id="crane_equipment_type_1" model="crane.equipment.type">
             <field name="name">Harness / Fall Arrest</field>

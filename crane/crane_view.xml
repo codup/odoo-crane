@@ -48,7 +48,7 @@
                             <group>
                                 <field name="reviewed" attrs="{'readonly': [('state','in',['in_process','done'])]}"/>
                                 <field name="customer_person_id" attrs="{'readonly': [('state','in',['in_process','done'])]}"/>
-                                <newline/><label string="" colspan="0" states="draft"/>
+                                <newline/><label for="image" string="" colspan="0" states="draft"/>
                                 <field name="image" widget="image" colspan="2" nolabel="1" class="oe_avatar oe_right codup_readonly_image codup_sign" attrs="{'readonly': [('state','in',['in_process','done'])]}"/>
                             </group>
                         </group>
