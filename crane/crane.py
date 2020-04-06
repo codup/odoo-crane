@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2020 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -105,7 +105,6 @@ class crane_equipment(models.Model):
             vals['certificate'] = self.env['ir.sequence'].next_by_code('crane.equipment') or '/'
         return super(crane_equipment, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         tools.image_resize_images(vals)
         return super(crane_equipment, self).write(vals)
@@ -154,7 +153,6 @@ class crane_work_order(models.Model):
     description = fields.Text('Description')
     company_id = fields.Many2one('res.company','Company',required=True, default=lambda self: self.env['res.company']._company_default_get('crane.work.order'))
 
-    @api.multi
     def confirm_order(self):
         self.write({'state': 'in_process'})
         task = self.env['crane.task']
@@ -169,12 +167,10 @@ class crane_work_order(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('crane.work.order') or '/'
         return super(crane_work_order, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         tools.image_resize_images(vals)
         return super(crane_work_order, self).write(vals)
 
-    @api.multi
     def send_email(self):
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
@@ -287,7 +283,6 @@ class crane_task(models.Model):
             total += labor.duration
         self.total_labor = total
 
-    @api.multi
     def done_task(self):
         for task in self:
             result = 'safe'
@@ -361,7 +356,6 @@ class crane_task_inspection_line(models.Model):
         tools.image_resize_images(vals)
         return super(crane_task_inspection_line, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         tools.image_resize_images(vals)
         return super(crane_task_inspection_line, self).write(vals)

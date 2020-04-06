@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2020 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
@@ -30,7 +30,6 @@ class crane_repeat_work_order(models.TransientModel):
     type = fields.Selection(TYPE_SELECTION, 'Repeat Inspection Task', required=True, default='all')
     completed = fields.Boolean('Completed', default=_is_completed)
 
-    @api.multi
     def repeat_wo(self):
         orders = self.env['crane.work.order']
         data = self.read()
