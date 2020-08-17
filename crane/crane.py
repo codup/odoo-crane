@@ -100,13 +100,15 @@ class crane_equipment(models.Model):
 
     @api.model
     def create(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         if vals.get('certificate','/')=='/':
             vals['certificate'] = self.env['ir.sequence'].next_by_code('crane.equipment') or '/'
         return super(crane_equipment, self).create(vals)
 
     def write(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         return super(crane_equipment, self).write(vals)
 
 
@@ -162,13 +164,15 @@ class crane_work_order(models.Model):
 
     @api.model
     def create(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         if vals.get('name','/')=='/':
             vals['name'] = self.env['ir.sequence'].next_by_code('crane.work.order') or '/'
         return super(crane_work_order, self).create(vals)
 
     def write(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         return super(crane_work_order, self).write(vals)
 
     def send_email(self):
@@ -353,11 +357,13 @@ class crane_task_inspection_line(models.Model):
 
     @api.model
     def create(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         return super(crane_task_inspection_line, self).create(vals)
 
     def write(self, vals):
-        tools.image_resize_images(vals)
+        if 'image' in vals:
+            vals['image_small'] = vals['image_medium'] = vals['image']
         return super(crane_task_inspection_line, self).write(vals)
 
 

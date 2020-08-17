@@ -20,10 +20,9 @@
 
         <act_window name="Photo"
             res_model="crane.see.photo"
-            src_model="crane.task.inspection.line"
+            binding_model="crane.task.inspection.line"
             target="new"
             view_mode="form"
-            view_type="form"
             id="action_view_see_photo"/>
 
     </data>

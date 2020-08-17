@@ -30,10 +30,9 @@
 
         <act_window name="Create a Follow up Work Order"
             res_model="crane.repeat.work.order"
-            src_model="crane.work.order"
+            binding_model="crane.work.order"
             target="new"
             view_mode="form"
-            view_type="form"
             id="action_view_repeat_work_order"/>
 
     </data>

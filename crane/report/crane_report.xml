@@ -17,7 +17,6 @@
             <field name="dpi">90</field>
         </record>
         <report 
-            auto="False" 
             id="report_crane_work_order" 
             model="crane.work.order" 
             name="crane.work_order"

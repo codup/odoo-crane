@@ -189,7 +189,6 @@
             <field name="name">Work Order</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">crane.work.order</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -251,7 +250,6 @@
             <field name="name">Equipment</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">crane.equipment</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -307,7 +305,6 @@
             <field name="name">Equipment Type</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">crane.equipment.type</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -345,7 +342,6 @@
             <field name="name">Inspection Point Type</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">crane.inspection.point.type</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
