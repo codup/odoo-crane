@@ -2,13 +2,13 @@
 ##############################################################################
 #
 #    Odoo
-#    Copyright (C) 2014-2018 CodUP (<http://codup.com>).
+#    Copyright (C) 2014-2020 CodUP (<http://codup.com>).
 #
 ##############################################################################
 
 {
     'name': 'Crane & Hoist',
-    'version': '1.5',
+    'version': '1.6',
     'summary': 'Inspection and Service System',
     'description': """
 Inspection and Service System for Crane & Hoist.
